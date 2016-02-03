@@ -183,6 +183,16 @@ class Compiler
         }
 
         $file = $this->pathResolver->getCssFilePath($shop, $timestamp);
+
+        $dir = dirname($file);
+        if (!is_dir($dir)) {
+            if (false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
+                throw new \RuntimeException(sprintf("Unable to create the %s directory (%s)\n", 'web', $dir));
+            }
+        } elseif (!is_writable($dir)) {
+            throw new \RuntimeException(sprintf("Unable to write in the %s directory (%s)\n", 'web', $dir));
+        }
+
         $file = new \SplFileObject($file, "a");
         if (!$file->flock(LOCK_EX)) {
             return;
@@ -607,6 +617,11 @@ class Compiler
     {
         $path = str_replace($this->rootDir, '', $path);
         $path = '../..' . $path;
+
+//        var_dump($path);
+//        var_dump($this->rootDir);
+//        var_dump(PUBLICDIR);
+
         return $path;
     }
 

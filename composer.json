@@ -72,6 +72,10 @@
         ],
         "files": ["engine/Shopware/Application.php"]
     },
+    "include-path": [
+        "./",
+        "engine/Library/"
+    ],
     "autoload-dev": {
         "psr-0": {
             "Shopware": "tests/"

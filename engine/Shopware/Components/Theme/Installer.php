@@ -131,15 +131,21 @@ class Installer
     private function synchronizeThemes()
     {
         //creates a directory iterator for the default theme directory (engine/Shopware/Themes)
-        $directories = new \DirectoryIterator(
-            $this->pathResolver->getFrontendThemeDirectory()
-        );
+        $directories = new \DirectoryIterator($this->pathResolver->getFrontendThemeDirectory());
 
         //synchronize the default themes which are stored in the engine/Shopware/Themes directory.
         $themes = $this->synchronizeThemeDirectories($directories);
 
+
+        //synchronize the user themes
+        $userThemeDirectory = new \DirectoryIterator($this->pathResolver->getUserFrontendThemeDirectory());
+        $userThemes = $this->synchronizeUserThemeDirectories($userThemeDirectory);
+        $themes = array_merge($themes, $userThemes);
+
+
         //to prevent inconsistent data, themes that were removed from the file system have to be removed.
-        $this->removeDeletedThemes();
+        //$this->removeDeletedThemes();
+
 
         //before the inheritance can be built, the plugin themes have to be initialized.
         $pluginThemes = $this->synchronizePluginThemes();
@@ -153,6 +159,66 @@ class Installer
         foreach ($themes as $theme) {
             $this->configurator->synchronize($theme);
         }
+    }
+
+    /**
+     * Helper function which iterates the engine\Shopware\Themes directory
+     * and registers all stored themes within the directory as \Shopware\Models\Shop\Template.
+     *
+     * @param \DirectoryIterator $directories
+     * @param \Shopware\Models\Plugin\Plugin $plugin
+     * @return Theme[]
+     */
+    private function synchronizeUserThemeDirectories(\DirectoryIterator $directories, Plugin $plugin = null)
+    {
+        $themes = array();
+
+        $settings = $this->service->getSystemConfiguration(
+            AbstractQuery::HYDRATE_OBJECT
+        );
+
+        /**@var $directory \DirectoryIterator */
+        foreach ($directories as $directory) {
+            //check valid directory
+
+            if ($directory->isDot() || !$directory->isDir() || $directory->getFilename() == '_cache') {
+                continue;
+            }
+
+            try {
+                $theme = $this->util->getThemeByDirectory($directory);
+            } catch (\Exception $e) {
+                continue;
+            }
+            $data = $this->getThemeDefinition($theme);
+
+            $template = $this->repository->findOneBy(array(
+                'template' => $theme->getTemplate()
+            ));
+
+            if (!$template instanceof Shop\Template) {
+                $template = new Shop\Template();
+                $template->setSource('user');
+                if ($plugin) {
+                    $template->setPlugin($plugin);
+                }
+
+                $this->entityManager->persist($template);
+            }
+
+            $template->fromArray($data);
+
+            if (!$template->getId() || $settings->getReloadSnippets()) {
+                $this->synchronizeSnippets($template);
+            }
+
+            $this->entityManager->flush($template);
+
+            $themes[] = $theme;
+        }
+
+
+        return $themes;
     }
 
     /**
@@ -184,8 +250,6 @@ class Installer
             } catch (\Exception $e) {
                 continue;
             }
-
-
             $data = $this->getThemeDefinition($theme);
 
             $template = $this->repository->findOneBy(array(

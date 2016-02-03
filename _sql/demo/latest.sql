@@ -5207,15 +5207,6 @@ INSERT INTO `s_core_acl_roles` (`id`, `roleID`, `resourceID`, `privilegeID`) VAL
 (1, 1, NULL, NULL),
 (7, 6, 28, NULL);
 
-TRUNCATE TABLE `s_core_auth`;
-INSERT INTO `s_core_auth` (`id`, `roleID`, `username`, `password`, `apiKey`, `localeID`, `sessionID`, `lastlogin`, `name`, `email`, `active`, `failedlogins`, `lockeduntil`, `extended_editor`, `disabled_cache`) VALUES
-(62, 1, 'demo', '84c2ef7bb215395c80119636233765f0', NULL, 1, '', '2012-08-31 11:39:28', 'Demo-Admin', 'demo@demo.de', 1, 1, '0000-00-00 00:00:00', 0, 0);
-
-TRUNCATE TABLE `s_core_auth_attributes`;
-TRUNCATE TABLE `s_core_auth_roles`;
-INSERT INTO `s_core_auth_roles` (`id`, `parentID`, `name`, `description`, `source`, `enabled`, `admin`) VALUES
-(1, NULL, 'local_admins', 'Default group that gains access to all shop functions', 'build-in', 1, 1),
-(6, NULL, 'Blog', 'nur für das Editieren des Blogs.', 'custom', 1, 0);
 
 TRUNCATE TABLE `s_core_config_mails_attachments`;
 TRUNCATE TABLE `s_core_config_mails_attributes`;

@@ -66,6 +66,12 @@ class Models
         AnnotationDriver $modelAnnotation
     ) {
         $vendorPath = $kernelRootDir . '/vendor';
+        if (!file_exists($vendorPath.'/composer')) {
+            $vendorPath = $kernelRootDir . '/../../../vendor';
+            if (!file_exists($vendorPath.'/composer')) {
+                throw new \Exception('Vendor path not found');
+            }
+        }
 
         // register standard doctrine annotations
         AnnotationRegistry::registerFile(

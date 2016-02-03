@@ -114,14 +114,12 @@
     </target>
 
     <target name="build-database-foundation">
-
         <exec executable="${script.php}" dir="${basedir}/bin" failonerror="true">
             <arg line="console sw:setup"/>
             <arg value="--steps=drop,create,setup,setupShop"/>
             <arg value="--host=${app.host}"/>
             <arg value="--path=${app.path}"/>
         </exec>
-
     </target>
 
     <target name="build-database-apply-deltas">

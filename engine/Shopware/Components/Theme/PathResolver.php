@@ -101,10 +101,21 @@ class PathResolver
      */
     public function getFrontendThemeDirectory()
     {
-        return $this->getBaseThemeDirectory() .
-        DIRECTORY_SEPARATOR .
-        'Frontend';
+        return $this->getBaseThemeDirectory() . DIRECTORY_SEPARATOR . 'Frontend';
     }
+
+    /**
+     * Returns the Frontend folder of the Themes directory.
+     *
+     * @return string
+     */
+    public function getUserFrontendThemeDirectory()
+    {
+        return FRONTENDTHEMEDIR;
+
+        return $this->getBaseThemeDirectory() . DIRECTORY_SEPARATOR . 'Frontend';
+    }
+
 
     /**
      * Returns the backend theme directory
@@ -114,9 +125,7 @@ class PathResolver
      */
     public function getBackendThemeDirectory()
     {
-        return $this->getBaseThemeDirectory() .
-        DIRECTORY_SEPARATOR .
-        'Backend' ;
+        return $this->getBaseThemeDirectory() . DIRECTORY_SEPARATOR . 'Backend' ;
     }
 
     /**
@@ -221,6 +230,8 @@ class PathResolver
      */
     public function getCacheDirectory()
     {
+        return PUBLICDIR . '/cache';
+
         return $this->rootDir . '/web/cache';
     }
 
@@ -238,7 +249,13 @@ class PathResolver
             $targetPath = $shop->getBasePath();
         }
 
-        return str_replace($this->rootDir, $targetPath, $path);
+        if (PUBLICPATH) {
+            $targetPath = $targetPath . PUBLICPATH;
+        }
+
+        $path = str_replace(PUBLICDIR, $targetPath, $path);
+
+        return $path;
     }
 
     /**
@@ -321,6 +338,10 @@ class PathResolver
      */
     private function getThemeDirectory(Shop\Template $theme)
     {
+        if ($theme->getSource() === 'user') {
+            return $this->getUserFrontendThemeDirectory() . DIRECTORY_SEPARATOR . $theme->getTemplate();
+        }
+
         if ($theme->getPlugin()) {
             return $this->getPluginPath($theme->getPlugin()) .
             DIRECTORY_SEPARATOR .

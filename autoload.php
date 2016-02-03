@@ -25,16 +25,16 @@
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Composer\Autoload\ClassLoader;
 
-set_include_path(
-    __DIR__ . PATH_SEPARATOR .
-    __DIR__ . '/engine/Library/' . PATH_SEPARATOR // Library
-);
-
 /**
  * @var ClassLoader $loader
  */
 $loader = require __DIR__ . '/vendor/autoload.php';
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+
+define('PUBLICDIR', __DIR__.'/web/');
+define('PUBLICPATH', '/web');
+define('PROJECTDIR', __DIR__);
+define('FRONTENDTHEMEDIR', PROJECTDIR . '/CustomThemes');
 
 return $loader;
