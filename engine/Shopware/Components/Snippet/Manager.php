@@ -273,21 +273,13 @@ class Shopware_Components_Snippet_Manager extends Enlight_Components_Snippet_Man
             $configDir[] = Shopware()->DocPath('snippets');
         }
 
-        //Add plugins dirs
         /** @var \Shopware\Models\Plugin\Plugin[] $plugins */
         $plugins = $this->modelManager->getRepository('Shopware\Models\Plugin\Plugin')->findByActive(true);
-        $pluginBasePath = Shopware()->AppPath('Plugins');
+
+        $pluginSources = Shopware()->Container()->getParameter('shopware.pluginSources');
 
         foreach ($plugins as $plugin) {
-            $pluginPath = implode(
-                DIRECTORY_SEPARATOR,
-                array(
-                    rtrim($pluginBasePath, DIRECTORY_SEPARATOR),
-                    $plugin->getSource(),
-                    $plugin->getNamespace(),
-                    $plugin->getName()
-                )
-            );
+            $pluginPath = $pluginSources[$plugin->getSource()] . $plugin->getNamespace() . DIRECTORY_SEPARATOR . $plugin->getName();
 
             // Add plugin snippets
             $pluginSnippetPath = $pluginPath . DIRECTORY_SEPARATOR . 'Snippets' . DIRECTORY_SEPARATOR;

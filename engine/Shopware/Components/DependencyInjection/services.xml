@@ -79,7 +79,7 @@
             <argument type="service" id="Loader"/>
             <argument type="service" id="events"/>
             <argument type="service" id="application"/>
-            <argument>%shopware.plugins%</argument>
+            <argument>%shopware.pluginSources%</argument>
         </service>
 
         <service id="router_factory" class="Shopware\Components\DependencyInjection\Bridge\Router" />
