@@ -273,7 +273,7 @@ class Shopware_Controllers_Backend_Index extends Enlight_Controller_Action imple
      */
     private function checkIsFeedbackRequired()
     {
-        return (Shopware::VERSION_TEXT !== '___VERSION_TEXT___' && strlen(Shopware::VERSION_TEXT) !== 0);
+        return (Shopware::VERSION_TEXT !== '___VERSION_TEXT___' && !empty(Shopware::VERSION_TEXT));
     }
 
     /**

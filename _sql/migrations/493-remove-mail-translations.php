@@ -14,6 +14,6 @@ class Migrations_Migration493 Extends Shopware\Components\Migrations\AbstractMig
      */
     private function removeTranslations()
     {
-        $this->addSql("TRUNCATE s_core_translations;");
+        $this->addSql('TRUNCATE s_core_translations;');
     }
 }

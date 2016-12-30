@@ -1187,7 +1187,7 @@ class Shopware_Plugins_Core_HttpCache_Bootstrap extends Shopware_Components_Plug
                 $response->setCookie(
                     'x-cache-context-hash',
                     null,
-                    strtotime('-1 Year', time()),
+                    strtotime('-1 Year'),
                     $request->getBasePath() . '/',
                     ($request->getHttpHost() == 'localhost') ? null : $request->getHttpHost()
                 );

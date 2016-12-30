@@ -42,13 +42,13 @@ class SepaPaymentMethod extends GenericPaymentMethod
         $sErrorFlag = array();
         $sErrorMessages = array();
 
-        if (!$paymentData["sSepaIban"] || strlen(trim($paymentData["sSepaIban"])) === 0) {
+        if (!$paymentData["sSepaIban"] || empty(trim($paymentData["sSepaIban"]))) {
             $sErrorFlag["sSepaIban"] = true;
         }
-        if (Shopware()->Config()->sepaShowBic && Shopware()->Config()->sepaRequireBic && (!$paymentData["sSepaBic"] || strlen(trim($paymentData["sSepaBic"])) === 0)) {
+        if (Shopware()->Config()->sepaShowBic && Shopware()->Config()->sepaRequireBic && (!$paymentData["sSepaBic"] || empty(trim($paymentData["sSepaBic"])))) {
             $sErrorFlag["sSepaBic"] = true;
         }
-        if (Shopware()->Config()->sepaShowBankName && Shopware()->Config()->sepaRequireBankName && (!$paymentData["sSepaBankName"] || strlen(trim($paymentData["sSepaBankName"])) === 0)) {
+        if (Shopware()->Config()->sepaShowBankName && Shopware()->Config()->sepaRequireBankName && (!$paymentData["sSepaBankName"] || empty(trim($paymentData["sSepaBankName"])))) {
             $sErrorFlag["sSepaBankName"] = true;
         }
 

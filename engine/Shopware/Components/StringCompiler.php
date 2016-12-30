@@ -128,7 +128,7 @@ class Shopware_Components_StringCompiler
      */
     public function compileString($value, $context = null)
     {
-        if (strlen($value) == 0) {
+        if (empty($value)) {
             return $value;
         }
 

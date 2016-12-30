@@ -9,7 +9,7 @@ class Migrations_Migration773 extends Shopware\Components\Migrations\AbstractMig
     public function up($modus)
     {
         $this->addSql('SET @componentId = (SELECT `id` FROM `s_library_component` WHERE `name` = "Youtube-Video")');
-        $this->addSql("SET @maxNumberPosition = (SELECT MAX(position) FROM `s_library_component_field` WHERE `componentID`=@componentId) + 1;");
+        $this->addSql('SET @maxNumberPosition = (SELECT MAX(position) FROM `s_library_component_field` WHERE `componentID`=@componentId) + 1;');
         $sql = <<<'EOD'
 INSERT IGNORE INTO `s_library_component_field` (`id`, `componentID`, `name`, `x_type`, `value_type`, `field_label`, `support_text`, `help_title`, `help_text`, `store`, `display_field`, `value_field`, `default_value`, `allow_blank`, `translatable`, `position`) 
 VALUES

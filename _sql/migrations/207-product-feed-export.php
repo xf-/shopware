@@ -11,6 +11,5 @@ class Migrations_Migration207 Extends Shopware\Components\Migrations\AbstractMig
          * It's old content is now part of migration 212
          *
          **/
-        return;
     }
 }

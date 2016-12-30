@@ -539,7 +539,7 @@ class Service
     private function getSnippetName($name)
     {
         $name = substr($name, 2);
-        return substr($name, 0, strlen($name) - 2);
+        return substr($name, 0, -2);
     }
 
     /**
